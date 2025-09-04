@@ -270,7 +270,7 @@ class HuaWei:
         isNeedVerificationCode = False
         try:
             isNeedVerificationCode = self.driver_wait.until(EC.text_to_be_present_in_element(
-                (By.CSS_SELECTOR, ".hwid-dialog-main .hwid-getAuthCode .hwid-smsCode"),
+                (By.CSS_SELECTOR, ".hwid-dialog-main .hwid-getAuthCode-input .hwid-smsCode"),
                 "获取验证码"))
         except TimeoutException:
             pass
@@ -422,7 +422,7 @@ class HuaWei:
         logger.info("开始选择手机套装规格")
         set_skus = sets.split(",")
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-1dbjc4n.r-1h0z5md.r-9aemit .css-1dbjc4n.r-18u37iz.r-1w6e6rj .css-1dbjc4n.r-1loqt21.r-1otgn73")))
+                                                                                  ".css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
         for sku in set_skus:
             for sku_button in sku_buttons:
                 if sku_button.text == sku:
@@ -435,7 +435,7 @@ class HuaWei:
         sku_version = self.config.get("product", "version")
 
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-1dbjc4n.r-1h0z5md.r-9aemit .css-1dbjc4n.r-18u37iz.r-1w6e6rj .css-1dbjc4n.r-1loqt21.r-1otgn73")))
+                                                                                  ".css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
         for sku_button in sku_buttons:
             if sku_button.text == sku_color or sku_button.text == sku_version:
                 time.sleep(0.002)
@@ -823,8 +823,9 @@ class HuaWei:
         tryTimes = 1
         while self.sec_kill_time is None and tryTimes < constants.RETRY_TIMES:
             try:
-                countdownStr = self.browser.find_element(By.CSS_SELECTOR, "#prd-detail  .css-901oao.r-jwli3a.r-1b43r93.r-13uqrnb.r-16dba41.r-oxtfae.r-hjklzo.r-6dt33c")
-                countdownStr = datetime.now().strftime("%Y年") + countdownStr.text[5:]
+                countdownElements = self.browser.find_elements(By.CSS_SELECTOR, "#prd-detail .css-175oi2r.r-14lw9ot .css-175oi2r.r-14lw9ot.r-18u37iz.r-1wtj0ep .css-175oi2r.r-1wtj0ep .css-146c3p1.r-13uqrnb.r-oxtfae")
+                logger.info("抢购开始时间为：[{}]", countdownElements[3].text)
+                countdownStr = datetime.now().strftime("%Y年") + countdownElements[3].text[5:]
                 self.sec_kill_time = datetime.strptime(countdownStr, "%Y年%m月%d日 %H:%M")
                 logger.info("抢购开始时间为：[{}]", self.sec_kill_time)
             except (StaleElementReferenceException, NoSuchElementException):
