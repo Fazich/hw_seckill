@@ -422,7 +422,7 @@ class HuaWei:
         logger.info("开始选择手机套装规格")
         set_skus = sets.split(",")
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
+                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
         for sku in set_skus:
             for sku_button in sku_buttons:
                 if sku_button.text == sku:
@@ -435,7 +435,7 @@ class HuaWei:
         sku_version = self.config.get("product", "version")
 
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
+                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
         for sku_button in sku_buttons:
             if sku_button.text == sku_color or sku_button.text == sku_version:
                 time.sleep(0.002)
