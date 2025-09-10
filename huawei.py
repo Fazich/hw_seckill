@@ -20,7 +20,7 @@ from huawei_thread import HuaWeiThread
 from tools import utils, time_utils
 
 
-def title_contains_any(titles: list) -> EC.Callable[[EC.AnyDriver], bool]:
+def title_contains_any(titles: list) -> EC.Callable[[EC.WebDriver], bool]:
     """An expectation for checking that the title contains any of the case-sensitive
     substrings from the given list.
 
