@@ -10,11 +10,11 @@ from datetime import datetime, timedelta
 
 def server_time():
     logger.info("开始获取华为服务器时间")
-    url = "https://buy.vmall.com/queryRushbuyInfo.json?sbomCodes=2601010453707&portal=1&t=1697127872971"
+    url = "https://openapi.vmall.com/serverTime.json"
     response = requests.get(url)
     if response.ok:
         data = response.json()
-        return data['currentTime']
+        return data['serverTimeMs']
     else:
         logger.error("华为服务器获取时间失败！")
 

@@ -17,21 +17,7 @@ import constants
 from browser.browser_factory import BrowserFactory
 from config import Config
 from huawei_thread import HuaWeiThread
-from tools import utils, time_utils
-
-
-def title_contains_any(titles: list) -> EC.Callable[[EC.WebDriver], bool]:
-    """An expectation for checking that the title contains any of the case-sensitive
-    substrings from the given list.
-
-    titles is a list of fragments of title expected.
-    Returns True if the title matches any fragment in the list, False otherwise.
-    """
-
-    def _predicate(driver):
-        return any(title in driver.title for title in titles)
-
-    return _predicate
+from tools import utils, time_utils, expected_conditions_extension as ECE
 
 class HuaWei:
     config = None
@@ -178,7 +164,7 @@ class HuaWei:
         loginLink.click()
 
         try:
-            self.driver_wait.until(title_contains_any(['华为账号-登录', 'HUAWEI ID-Log in']))
+            self.driver_wait.until(ECE.title_contains_any(['华为账号-登录', 'HUAWEI ID-Log in']))
             logger.info("已跳转登录页面")
             self.__get_current_page_type()
         except TimeoutException:
@@ -422,7 +408,7 @@ class HuaWei:
         logger.info("开始选择手机套装规格")
         set_skus = sets.split(",")
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
+                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-175oi2r.r-1loqt21.r-1otgn73")))
         for sku in set_skus:
             for sku_button in sku_buttons:
                 if sku_button.text == sku:
@@ -435,7 +421,7 @@ class HuaWei:
         sku_version = self.config.get("product", "version")
 
         sku_buttons = self.driver_wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,
-                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-146c3p1.r-8akbws.r-krxsd3.r-1udh08x.r-1udbk01")))
+                                                                                  ".css-175oi2r.r-1pkz85s.r-151r267.r-16pv4up.r-1keljc5.r-fg2qkj.r-187g3x.r-16qzwuk.r-1pb60y0.r-7898gx.r-m8azki.r-1o5risz.r-gu0qjt.r-9aemit.r-13qz1uu.r-1g40b8q .css-175oi2r.r-1loqt21.r-1otgn73")))
         for sku_button in sku_buttons:
             if sku_button.text == sku_color or sku_button.text == sku_version:
                 time.sleep(0.002)
