@@ -9,6 +9,7 @@ from urllib.parse import unquote
 from loguru import logger
 from selenium.common import StaleElementReferenceException, NoSuchElementException, TimeoutException, \
     ElementClickInterceptedException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -148,8 +149,18 @@ class HuaWei:
         loginLink = None
         times = 1
         while loginLink is None and times < constants.RETRY_TIMES:
+            try:
+                nav_element = self.driver_wait.until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "#navigationLayout > div > div:nth-child(3) > div > div > div:last-child")))
+                ActionChains(self.browser).move_to_element(nav_element).perform()
+                time.sleep(0.01)
+            except TimeoutException:
+                logger.warning("未找到登录入口，程序将在3秒后退出...")
+                time.sleep(3)
+                exit()
+            
             menu_links = self.driver_wait.until(
-                EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.css-146c3p1.r-1a7l8x0.r-1enofrn.r-ueyrd6.r-is05cd.r-gy4na3')))
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'div[data-testid="vui_popup_body_inner"] div[data-testid="vui_text_container"]')))
             for menu_link in menu_links:
                 if '请登录' == menu_link.text:
                     loginLink = menu_link
